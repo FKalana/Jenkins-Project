@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DIRECTORY_PATH = '/Users/fathimakalana/.jenkins/workspace/Task6.1C'
+        DIRECTORY_PATH = '/Users/fathimakalana/Desktop/Jenkins-Project'
         TESTING_ENVIRONMENT = 'TestEnv'
         PRODUCTION_ENVIRONMENT = 'KProduction'
     }
@@ -61,4 +61,3 @@ pipeline {
         }
     }
 }
-has context menu
