@@ -1,63 +1,119 @@
 pipeline {
     agent any
+
     environment {
-        DIRECTORY_PATH = '/Users/fathimakalana/.jenkins/workspace/Jenkins Project'
-        TESTING_ENVIRONMENT = 'TestEnv'
-        PRODUCTION_ENVIRONMENT = 'KProduction'
+        RECIPIENTS = 'kalanafathima3969@gmail.com'
     }
- 
+
     stages {
         stage('Build') {
             steps {
-                echo "Building the code using Maven..."
-                echo "Fetching source code from ${DIRECTORY_PATH}"
-                echo "Compiling the code and generating artifacts..."
+                echo 'Building the application with Maven...'
+                // Example: sh 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo "Unit tests"
-                echo "Integration tests"
+                echo 'Running unit and integration tests with JUnit and TestNG...'
+                // Example: sh 'mvn test'
             }
         }
         stage('Code Analysis') {
             steps {
-                echo "Check the quality of the code"
+                echo 'Analyzing the code with SonarQube...'
+                // Example: sh 'sonar-scanner'
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan with OWASP Dependency-Check...'
+                // Example: sh 'dependency-check --project your-project'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                echo "Deploy the application to a testing environment specified by the environment variable: ${env.TESTING_ENVIRONMENT}"
+                echo 'Deploying to staging environment on AWS EC2...'
+                // Example: sh 'scp target/app.war user@staging-server:/path/to/deploy'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo "Running integration tests in Staging environment..."
-            }
-        }
-        stage('Approval') {
-            steps {
-                script {
-                    input message: 'Approve deployment to production?'
-                }
+                echo 'Running integration tests on staging with Selenium/TestNG...'
+                // Example: sh 'mvn verify -Pstaging'
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploy the code to the production environment: ${env.PRODUCTION_ENVIRONMENT}"
+                echo 'Deploying to production environment on AWS EC2...'
+                // Example: sh 'scp target/app.war user@production-server:/path/to/deploy'
             }
         }
     }
+
     post {
-        success {
-            mail to: 'kalanafathima3969@gmail.com',
-                 subject: "Build Successful: ${currentBuild.fullDisplayName}",
-                 body: "The pipeline completed successfully. View details at ${env.BUILD_URL}"
+        always {
+            echo 'Sending final notification email...'
+            emailext(
+                to: "${env.RECIPIENTS}",
+                subject: "Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                body: """<p>Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} completed with status: ${currentBuild.currentResult}</p>
+                        <p>See attached log for details.</p>""",
+                attachLog: true,
+                compressLog: true
+            )
         }
         failure {
-            mail to: 'kalanafathima3969@gmail.com',
-                 subject: "Build Failed: ${currentBuild.fullDisplayName}",
-                 body: "The pipeline failed. View details at ${env.BUILD_URL}"
+            echo 'Pipeline failed!'
+        }
+    }
+    
+    // Specific notifications for Unit and Integration Tests stage
+    post {
+        stage('Unit and Integration Tests') {
+            success {
+                emailext(
+                    to: "${env.RECIPIENTS}",
+                    subject: "Unit and Integration Tests - Success",
+                    body: """<p>The Unit and Integration Tests stage completed successfully.</p>
+                            <p>See attached log for details.</p>""",
+                    attachLog: true,
+                    compressLog: true
+                )
+            }
+            failure {
+                emailext(
+                    to: "${env.RECIPIENTS}",
+                    subject: "Unit and Integration Tests - Failure",
+                    body: """<p>The Unit and Integration Tests stage failed.</p>
+                            <p>See attached log for details.</p>""",
+                    attachLog: true,
+                    compressLog: true
+                )
+            }
+        }
+
+        // Specific notifications for Security Scan stage
+        stage('Security Scan') {
+            success {
+                emailext(
+                    to: "${env.RECIPIENTS}",
+                    subject: "Security Scan - Success",
+                    body: """<p>The Security Scan stage completed successfully.</p>
+                            <p>See attached log for details.</p>""",
+                    attachLog: true,
+                    compressLog: true
+                )
+            }
+            failure {
+                emailext(
+                    to: "${env.RECIPIENTS}",
+                    subject: "Security Scan - Failure",
+                    body: """<p>The Security Scan stage failed.</p>
+                            <p>See attached log for details.</p>""",
+                    attachLog: true,
+                    compressLog: true
+                )
+            }
         }
     }
 }
