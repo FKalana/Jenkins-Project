@@ -9,13 +9,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application with Maven...'
-                // Example: sh 'mvn clean package'
+                // Example:mvn clean package
             }
         }
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests with JUnit and TestNG...'
-                // Example: sh 'mvn test'
+                // Example:mvn test
             }
             post {
                 success {
@@ -43,13 +43,13 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 echo 'Analyzing the code with SonarQube...'
-                // Example: sh 'sonar-scanner'
+                // Example:sonar-scanner
             }
         }
         stage('Security Scan') {
             steps {
                 echo 'Performing security scan with OWASP Dependency-Check...'
-                // Example: sh 'dependency-check --project your-project'
+                // Example:dependency-check --project your-project
             }
             post {
                 success {
@@ -77,19 +77,18 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging environment on AWS EC2...'
-                // Example: sh 'scp target/app.war user@staging-server:/path/to/deploy'
+                // Example:AWS EC2
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running integration tests on staging with Selenium/TestNG...'
-                // Example: sh 'mvn verify -Pstaging'
+                // Example:mvn verify -Pstaging
             }
         }
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to production environment on AWS EC2...'
-                // Example: sh 'scp target/app.war user@production-server:/path/to/deploy'
             }
         }
     }
