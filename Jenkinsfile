@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+ 
     environment {
         RECIPIENTS = 'kalanafathima3969@gmail.com'
     }
