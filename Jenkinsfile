@@ -22,8 +22,8 @@ pipeline {
                     emailext(
                         to: "${env.RECIPIENTS}",
                         subject: "Unit and Integration Tests - Success",
-                        body: """<p>The Unit and Integration Tests stage completed successfully.</p>
-                                <p>See attached log for details.</p>""",
+                        body: """The Unit and Integration Tests stage completed successfully.
+                                See attached log for details.""",
                         attachLog: true,
                         compressLog: true
                     )
@@ -32,8 +32,8 @@ pipeline {
                     emailext(
                         to: "${env.RECIPIENTS}",
                         subject: "Unit and Integration Tests - Failure",
-                        body: """<p>The Unit and Integration Tests stage failed.</p>
-                                <p>See attached log for details.</p>""",
+                        body: """The Unit and Integration Tests stage failed.
+                                 See attached log for details.""",
                         attachLog: true,
                         compressLog: true
                     )
@@ -56,8 +56,8 @@ pipeline {
                     emailext(
                         to: "${env.RECIPIENTS}",
                         subject: "Security Scan - Success",
-                        body: """<p>The Security Scan stage completed successfully.</p>
-                                <p>See attached log for details.</p>""",
+                        body: """The Security Scan stage completed successfully.
+                                See attached log for details.""",
                         attachLog: true,
                         compressLog: true
                     )
@@ -66,8 +66,8 @@ pipeline {
                     emailext(
                         to: "${env.RECIPIENTS}",
                         subject: "Security Scan - Failure",
-                        body: """<p>The Security Scan stage failed.</p>
-                                <p>See attached log for details.</p>""",
+                        body: """The Security Scan stage failed.
+                                 See attached log for details.""",
                         attachLog: true,
                         compressLog: true
                     )
@@ -99,8 +99,8 @@ pipeline {
             emailext(
                 to: "${env.RECIPIENTS}",
                 subject: "Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-                body: """<p>Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} completed with status: ${currentBuild.currentResult}</p>
-                        <p>See attached log for details.</p>""",
+                body: """Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} completed with status: ${currentBuild.currentResult}
+                        See attached log for details.""",
                 attachLog: true,
                 compressLog: true
             )
