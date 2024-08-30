@@ -24,8 +24,7 @@ pipeline {
                         subject: "Unit and Integration Tests - Success",
                         body: """<p>The Unit and Integration Tests stage completed successfully.</p>
                                 <p>See attached log for details.</p>""",
-                        attachLog: true,
-                        compressLog: true
+                        attachLog: true
                     )
                 }
                 failure {
@@ -34,8 +33,7 @@ pipeline {
                         subject: "Unit and Integration Tests - Failure",
                         body: """<p>The Unit and Integration Tests stage failed.</p>
                                 <p>See attached log for details.</p>""",
-                        attachLog: true,
-                        compressLog: true
+                        attachLog: true
                     )
                 }
             }
@@ -58,8 +56,7 @@ pipeline {
                         subject: "Security Scan - Success",
                         body: """<p>The Security Scan stage completed successfully.</p>
                                 <p>See attached log for details.</p>""",
-                        attachLog: true,
-                        compressLog: true
+                        attachLog: true
                     )
                 }
                 failure {
@@ -68,8 +65,7 @@ pipeline {
                         subject: "Security Scan - Failure",
                         body: """<p>The Security Scan stage failed.</p>
                                 <p>See attached log for details.</p>""",
-                        attachLog: true,
-                        compressLog: true
+                        attachLog: true
                     )
                 }
             }
@@ -102,8 +98,7 @@ pipeline {
                 subject: "Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
                 body: """<p>Pipeline ${env.JOB_NAME} - Build #${env.BUILD_NUMBER} completed with status: ${currentBuild.currentResult}</p>
                         <p>See attached log for details.</p>""",
-                attachLog: true,
-                compressLog: true
+                attachLog: true
             )
         }
         failure {
