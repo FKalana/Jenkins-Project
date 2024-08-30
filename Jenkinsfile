@@ -17,6 +17,28 @@ pipeline {
                 echo 'Running unit and integration tests with JUnit and TestNG...'
                 // Example: sh 'mvn test'
             }
+            post {
+                success {
+                    emailext(
+                        to: "${env.RECIPIENTS}",
+                        subject: "Unit and Integration Tests - Success",
+                        body: """<p>The Unit and Integration Tests stage completed successfully.</p>
+                                <p>See attached log for details.</p>""",
+                        attachLog: true,
+                        compressLog: true
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "${env.RECIPIENTS}",
+                        subject: "Unit and Integration Tests - Failure",
+                        body: """<p>The Unit and Integration Tests stage failed.</p>
+                                <p>See attached log for details.</p>""",
+                        attachLog: true,
+                        compressLog: true
+                    )
+                }
+            }
         }
         stage('Code Analysis') {
             steps {
@@ -28,6 +50,28 @@ pipeline {
             steps {
                 echo 'Performing security scan with OWASP Dependency-Check...'
                 // Example: sh 'dependency-check --project your-project'
+            }
+            post {
+                success {
+                    emailext(
+                        to: "${env.RECIPIENTS}",
+                        subject: "Security Scan - Success",
+                        body: """<p>The Security Scan stage completed successfully.</p>
+                                <p>See attached log for details.</p>""",
+                        attachLog: true,
+                        compressLog: true
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "${env.RECIPIENTS}",
+                        subject: "Security Scan - Failure",
+                        body: """<p>The Security Scan stage failed.</p>
+                                <p>See attached log for details.</p>""",
+                        attachLog: true,
+                        compressLog: true
+                    )
+                }
             }
         }
         stage('Deploy to Staging') {
@@ -64,56 +108,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-        }
-    }
-    
-    // Specific notifications for Unit and Integration Tests stage
-    post {
-        stage('Unit and Integration Tests') {
-            success {
-                emailext(
-                    to: "${env.RECIPIENTS}",
-                    subject: "Unit and Integration Tests - Success",
-                    body: """<p>The Unit and Integration Tests stage completed successfully.</p>
-                            <p>See attached log for details.</p>""",
-                    attachLog: true,
-                    compressLog: true
-                )
-            }
-            failure {
-                emailext(
-                    to: "${env.RECIPIENTS}",
-                    subject: "Unit and Integration Tests - Failure",
-                    body: """<p>The Unit and Integration Tests stage failed.</p>
-                            <p>See attached log for details.</p>""",
-                    attachLog: true,
-                    compressLog: true
-                )
-            }
-        }
-
-        // Specific notifications for Security Scan stage
-        stage('Security Scan') {
-            success {
-                emailext(
-                    to: "${env.RECIPIENTS}",
-                    subject: "Security Scan - Success",
-                    body: """<p>The Security Scan stage completed successfully.</p>
-                            <p>See attached log for details.</p>""",
-                    attachLog: true,
-                    compressLog: true
-                )
-            }
-            failure {
-                emailext(
-                    to: "${env.RECIPIENTS}",
-                    subject: "Security Scan - Failure",
-                    body: """<p>The Security Scan stage failed.</p>
-                            <p>See attached log for details.</p>""",
-                    attachLog: true,
-                    compressLog: true
-                )
-            }
         }
     }
 }
